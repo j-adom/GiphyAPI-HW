@@ -1,4 +1,4 @@
-var topics = ['Dougie','Deedee','Red Fraggle','Puppy','Lil D','Deedums','Valerie','Big D','Sleepy D','Princess D']
+var topics = ['Dougie','Deedee','Red Fraggle','Puppy','Lil D','Tipsy D','Valerie','Big D','Sleepy D','Princess D']
 const apiKey = "7J5zGMIzC45gFO3gY45PWNykemQTQpFJ"
 
 
@@ -62,11 +62,13 @@ $("<img>").on("click", function() {
 
 $("#add-button").on("click", function(event) {
   event.preventDefault();
+  console.log($("#new-nickname").val())
   if($("#new-nickname").val() !== ""){
-  }  
-  else{
     topics.push($("#new-nickname").val().trim())
     printButtons()
+  }  
+  else{
+    
   }
 })
 
