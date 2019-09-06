@@ -8,10 +8,14 @@ function printButtons() {
         let buttonText = topics[i]
         let newButton = $("<button>").text(buttonText)
         $("#button-list").append(newButton);
-
     }
-}
 
+    $("button").on("click", function() {
+      let nickname = $(this).text()
+      console.log(nickname)
+      postGifs(nickname)
+    })
+}
 
 function postGifs(searchTerm){
     
@@ -24,56 +28,49 @@ function postGifs(searchTerm){
     }).then(function(response) {
       console.log(response);
       
-  for(j=0;j<10;j++){
-      let newDiv = $("<div>").addClass("gif")
-      let newGif = $('<img />').attr('src', response.data[j].images.fixed_height_still.url)         // ADD gif PROPERTIES.
-                              .attr('gif-still', response.data[j].images.fixed_height_still.url)
-                              .attr('gif-animate', response.data[j].images.fixed_height.url)
-                              .attr('gif-state', 'still')
-                              .addClass("click-pic")
-                              .appendTo(newDiv);
-      let newRating = $("<p>").html("Gif Rating: " + response.data[j].rating)
-      newDiv.append(newRating)
-      $("#gif-display").append(newDiv);   
-
-  }   
-  })
+      for(j=0;j<10;j++){
+          let newDiv = $("<div>").addClass("gif")
+          let newGif = $('<img>')
+          newGif.attr('src', response.data[j].images.fixed_height_still.url)         // ADD gif PROPERTIES.
+                .attr('gif-still', response.data[j].images.fixed_height_still.url)
+                .attr('gif-animate', response.data[j].images.fixed_height.url)
+                .attr('gif-state', 'still')
+                .addClass("click-pic")
+                .appendTo(newDiv);
+          newGif.on("click", animateGif);
+          let newRating = $("<p>").html("Gif Rating: " + response.data[j].rating)
+          newDiv.append(newRating)
+          $("#gif-display").append(newDiv);   
+      }
+      
+     })
+  
+    
 }
 
 
 printButtons()
 
-
-$("<img>").on("click", function() {
-  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  var state = $(this).attr("gif-state");
-  // If the clicked gif's state is still, update its src attribute to what its gif-animate value is.
-  // Then, set the gif's gif-state to animate
-  // Else set src to the gif-still value
-  console.log(state)
-  if (state === "still") {
-    $(this).attr("src", $(this).attr("gif-animate"));
-    $(this).attr("gif-state", "animate");
-  } else {
-    $(this).attr("src", $(this).attr("gif-still"));
-    $(this).attr("gif-state", "still");
-  }
-});
-
 $("#add-button").on("click", function(event) {
   event.preventDefault();
-  console.log($("#new-nickname").val())
-  if($("#new-nickname").val() !== ""){
+  console.log($("#new-nickname").val().trim())
+  if($("#new-nickname").val().trim() !== ""){
     topics.push($("#new-nickname").val().trim())
     printButtons()
   }  
-  else{
-    
-  }
+  
 })
 
-$("button").on("click", function() {
-  let nickname = $(this).text()
-  console.log(nickname)
-  postGifs(nickname)
-})
+function animateGif(){
+  
+      var state = $(this).attr("gif-state");
+      console.log(state)
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("gif-animate"));
+        $(this).attr("gif-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("gif-still"));
+        $(this).attr("gif-state", "still");
+      }
+}
+
