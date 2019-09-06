@@ -7,10 +7,11 @@ function printButtons() {
     for(i=0;i<topics.length;i++){
         let buttonText = topics[i]
         let newButton = $("<button>").text(buttonText)
+                        .addClass("gif-button")
         $("#button-list").append(newButton);
     }
 
-    $("button").on("click", function() {
+    $(".gif-button").on("click", function() {
       let nickname = $(this).text()
       console.log(nickname)
       postGifs(nickname)
@@ -56,6 +57,7 @@ $("#add-button").on("click", function(event) {
   console.log($("#new-nickname").val().trim())
   if($("#new-nickname").val().trim() !== ""){
     topics.push($("#new-nickname").val().trim())
+    $("#new-nickname").val("")
     printButtons()
   }  
   
